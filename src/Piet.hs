@@ -1,12 +1,12 @@
 module Piet where
 
 data Val = VString String
-         | VInteger Int
+         | VInteger VInteger
+
+type VInteger = Int
 
 data Stack  = Nil
             | Stack Val Stack
-               
-
 
 data CP = R | L
 data DP = Right | Left | Up | Down
@@ -44,9 +44,6 @@ data Command = Push Val
 -- in: その環境の標準入力(STDIN)から数値を受け取りスタックにプッシュします。
 -- out: スタックから値をポップしてその環境の標準出力(STDOUT)に渡して出力します。
 
-
-
-
 push :: Stack  -> Val -> Stack 
 push  s val =
   Stack val s
@@ -54,18 +51,43 @@ push  s val =
 pop :: Stack  -> Stack 
 pop (Stack _ s) = s
 
-  
-      
-  
+add :: Stack  -> Stack 
+add (Stack (VInteger a) (Stack (VInteger b) s)) =
+  (Stack (VInteger c)  s)
+  where
+    c = a + b
 
+subtract :: Stack  -> Stack 
+subtract (Stack (VInteger a) (Stack (VInteger b) s)) =
+  (Stack (VInteger c) s)
+  where
+    c = a - b
+multiply :: Stack -> Stack  
+multiply (Stack (VInteger a) (Stack (VInteger b) s)) =
+  (Stack (VInteger c) s)
+  where
+    c = a * b
 
+divide :: Stack -> Stack  
+divide (Stack (VInteger a) (Stack (VInteger b) s)) =
+  (Stack (VInteger c) s)
+  where
+    c = a `div` b
 
-  
-  
-  
+mod' :: Stack -> Stack  
+mod' (Stack (VInteger a) (Stack (VInteger b) s)) =
+  (Stack (VInteger c) s)
+  where
+    c = a `mod` b
 
+not :: Stack -> Stack  
+not (Stack (VInteger a) s) =
+  (Stack (VInteger c) s)
+  where
+    c = if a == 1 then 0 else 1
 
-
-
-
-
+greater :: Stack -> Stack      
+greater (Stack (VInteger a) (Stack (VInteger b) s)) =
+  (Stack (VInteger c) s)
+  where
+    c = if a > b then 0 else 1
